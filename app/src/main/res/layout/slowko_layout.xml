@@ -1,9 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:id="@+id/slowko_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
-    android:textSize="15sp"></TextView>
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/slowko_layout_slowko"
+        android:layout_width="57dp"
+        android:layout_height="31dp"
+        android:layout_weight="48"
+        android:paddingHorizontal="16dp"
+        android:textSize="15sp">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/slowko_layout_tlumaczenie"
+        android:layout_width="57dp"
+        android:layout_height="31dp"
+        android:layout_weight="48"
+        android:text="" />
+
+    <CheckBox
+        android:id="@+id/slowko_layout_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="false"
+         />
+
+</LinearLayout>
 

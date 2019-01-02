@@ -1,13 +1,22 @@
 package pl.lodz.uni.math.kamilmucha.slowko;
 
+
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.lodz.uni.math.kamilmucha.slowko.database.Slowko;
@@ -31,27 +40,85 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         reloadSlowkasList();
     }
 
+
     private void reloadSlowkasList() {
         // pobieramy z bazy danych listę slowek
-        List<Slowko> allSlowkasList =  slowkoDAO.getAllSlowkas();
+        final ArrayList<Slowko> allSlowkasList = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas();
 
-        // ustawiamy adapter listy
-        listView.setAdapter(new ArrayAdapter<Slowko>(this, R.layout.slowko_layout, allSlowkasList) {
+        SlowkoListAdapter slowkoListAdapter = new SlowkoListAdapter(this, R.layout.slowko_layout, allSlowkasList);
+        listView.setAdapter(slowkoListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                final View slowkoView = super.getView(position, convertView, parent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                long viewId = view.getId();
+                //Toast.makeText(getApplicationContext(), "click" + id + "Pozycja" + position, Toast.LENGTH_SHORT).show();
+                // removeSlowko(allSlowkasList.get(position));
 
-                // po dlugim kliknięciu na słówko zostanie ono usunięte
-                slowkoView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        removeSlowko(getItem(position));
-                        return true;
-                    }
-                });
-                return slowkoView;
+               // if (viewId == R.id.slowko_layout_slowko || viewId == R.id.slowko_layout_tlumaczenie) {
+                    final Slowko slowkoDoUsuniecia = allSlowkasList.get(position);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(ZestawyActivity.this);
+                    alert.setTitle("Usuń słówko");
+                    alert.setMessage("Czy na pewno chcesz usunąć? \n" + slowkoDoUsuniecia.getSlowko() + " \t " + slowkoDoUsuniecia.getTlumaczenie());
+                    alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            removeSlowko(slowkoDoUsuniecia);
+                        }
+                    });
+                    alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // close dialog
+                            dialog.cancel();
+                        }
+                    });
+                    alert.show();
+
+
+             //   }
             }
         });
+
+
+/*
+
+    listView.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            final CheckBox checkBox = v.findViewById(R.id.slowko_layout_checkbox);
+            Toast.makeText(getApplicationContext(), "touchtam", Toast.LENGTH_SHORT).show();
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "clicktam", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            checkBox.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    Toast.makeText(getApplicationContext(), "clicktam2", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+
+            return false;
+
+        }
+    });
+/*
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("ZESTAWY", "kliknieto");
+                Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
+            }
+        });
+*/
     }
 
     private void removeSlowko(Slowko id) {
@@ -75,4 +142,5 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         List<Slowko> allSlowkasList =  slowkoDAO.getAllSlowkas();
         reloadSlowkasList();
     }
+
 }

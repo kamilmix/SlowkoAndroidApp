@@ -36,11 +36,11 @@
         android:id="@+id/buttonResetujWszystkie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
-        android:layout_marginBottom="32dp"
         android:onClick="onClickButtonResetujWszystkie"
         android:text="RESETUJ WSZYSTKIE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView" />
 </android.support.constraint.ConstraintLayout>

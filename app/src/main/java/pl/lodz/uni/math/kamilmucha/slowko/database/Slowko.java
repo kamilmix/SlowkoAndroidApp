@@ -15,6 +15,14 @@ public class Slowko {
 
     }
 
+    public Slowko(int id, String slowko, String tlumaczenie, boolean czyUmie){
+        this._id = id;
+        this.slowko = slowko;
+        this.tlumaczenie = tlumaczenie;
+        this.czyUmie=czyUmie;
+
+    }
+
 
     public Integer get_id() {
         return _id;
