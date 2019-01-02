@@ -64,6 +64,11 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         dodajDialog.show(getSupportFragmentManager(),"dialog dodaj");
     }
 
+    protected void onClickButtonResetujWszystkie(View view){
+        slowkoDAO.updateResetujWszystkieCzyUmie();
+        reloadSlowkasList();
+    }
+
     @Override
     public void przeslijSlowko(String slowko, String tlumaczenie) {
         slowkoDAO.insertSlowko(new Slowko(slowko, tlumaczenie));

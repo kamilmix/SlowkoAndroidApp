@@ -80,6 +80,34 @@ public class SlowkoDAO {
         return slowko;
     }
 
+    public void updateCzyUmie(final Slowko slowko, boolean czyUmie){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("slowko", slowko.getSlowko());
+        contentValues.put("tlumaczenie", slowko.getTlumaczenie());
+        contentValues.put("czy_umie", czyUmie);
+
+        dbManager.getWritableDatabase().update(Slowka.TABLE_NAME,
+                contentValues,
+                 "_id = ? ",
+                new String[]{slowko.get_id().toString()}
+        );
+    }
+
+    public void updateResetujWszystkieCzyUmie(){
+        Cursor cursor = dbManager.getReadableDatabase().query(Slowka.TABLE_NAME,
+                new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
+                null, null, null, null, null
+        );
+
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                updateCzyUmie(mapCursorToSlowko(cursor),false);
+            }
+        }
+
+    }
+
 
     private Slowko mapCursorToSlowko(final Cursor cursor) {
         int idColumnId = cursor.getColumnIndex("_id");

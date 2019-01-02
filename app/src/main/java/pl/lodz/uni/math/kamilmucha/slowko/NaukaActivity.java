@@ -45,6 +45,7 @@ public class NaukaActivity extends AppCompatActivity {
         if(wylosowane.equals(wpisane)){
             textViewCzyDobrze.setText("DOBRZE");
             editTextWpisaneTlumaczenie.setText("");
+            slowkoDAO.updateCzyUmie(wylosowaneSlowko, true);
 
             losujSlowkoZBazy();
         }
