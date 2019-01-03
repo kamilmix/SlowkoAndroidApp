@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import pl.lodz.uni.math.kamilmucha.slowko.R;
-import pl.lodz.uni.math.kamilmucha.slowko.database.SlowkoDAO;
 
 public class DodajDialog extends AppCompatDialogFragment {
     private EditText editTextSlowko;
@@ -53,11 +51,11 @@ public class DodajDialog extends AppCompatDialogFragment {
         try {
             listener = (DodajDialogListener) context;
         } catch (ClassCastException e) {
-            throw  new ClassCastException(context.toString() + "Zaimplement DodajDialogListener");
+            throw new ClassCastException(context.toString() + "Zaimplement DodajDialogListener");
         }
     }
 
-    public interface DodajDialogListener{
+    public interface DodajDialogListener {
         void przeslijSlowko(String slowko, String tlumaczenie);
     }
 }

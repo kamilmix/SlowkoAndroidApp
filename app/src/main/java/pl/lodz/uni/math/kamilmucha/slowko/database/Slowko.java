@@ -12,7 +12,6 @@ public class Slowko {
         this.slowko = slowko;
         this.tlumaczenie = tlumaczenie;
         czyUmie=false;
-
     }
 
     public Slowko(int id, String slowko, String tlumaczenie, boolean czyUmie){
@@ -20,7 +19,6 @@ public class Slowko {
         this.slowko = slowko;
         this.tlumaczenie = tlumaczenie;
         this.czyUmie=czyUmie;
-
     }
 
 
@@ -63,7 +61,6 @@ public class Slowko {
         else if (anInt==0){
             czyUmie=false;
         }
-
     }
 
     @Override

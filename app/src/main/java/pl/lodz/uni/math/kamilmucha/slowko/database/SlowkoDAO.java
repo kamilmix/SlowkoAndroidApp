@@ -9,27 +9,26 @@ import java.util.List;
 import java.util.Random;
 
 public class SlowkoDAO {
-    private DbManager dbManager;
+    private DbHelper dbHelper;
     private Random randomGenerator;
 
-    public  SlowkoDAO(Context context){
-
-        dbManager= new DbManager(context);
+    public SlowkoDAO(Context context) {
+        dbHelper = new DbHelper(context);
         randomGenerator = new Random();
     }
 
-    public void insertSlowko(final Slowko slowko){
+    public void insertSlowko(final Slowko slowko) {
 
         ContentValues values = new ContentValues();
         values.put("slowko", slowko.getSlowko());
         values.put("tlumaczenie", slowko.getTlumaczenie());
         values.put("czy_umie", false);
 
-        dbManager.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+        dbHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
     }
 
     public Slowko getSlowkoById(final int id) {
-        Cursor cursor = dbManager.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             return mapCursorToSlowko(cursor);
@@ -38,7 +37,7 @@ public class SlowkoDAO {
     }
 
     public void deleteSlowkoById(final Integer id) {
-        dbManager.getWritableDatabase().delete(Slowka.TABLE_NAME,
+        dbHelper.getWritableDatabase().delete(Slowka.TABLE_NAME,
                 " " + "_id" + " = ? ",
                 new String[]{id.toString()}
         );
@@ -46,7 +45,7 @@ public class SlowkoDAO {
 
 
     public List getAllSlowkas() {
-        Cursor cursor = dbManager.getReadableDatabase().query(Slowka.TABLE_NAME,
+        Cursor cursor = dbHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -61,9 +60,9 @@ public class SlowkoDAO {
         return results;
     }
 
-    public Slowko getRandomSlowko(){
-        Cursor cursor = dbManager.getReadableDatabase()
-                .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME  + " where czy_umie=0",null);
+    public Slowko getRandomSlowko() {
+        Cursor cursor = dbHelper.getReadableDatabase()
+                .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
         List results = new ArrayList<Slowko>();
 
@@ -80,21 +79,21 @@ public class SlowkoDAO {
         return slowko;
     }
 
-    public void updateCzyUmie(final Slowko slowko, boolean czyUmie){
+    public void updateCzyUmie(final Slowko slowko, boolean czyUmie) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("slowko", slowko.getSlowko());
         contentValues.put("tlumaczenie", slowko.getTlumaczenie());
         contentValues.put("czy_umie", czyUmie);
 
-        dbManager.getWritableDatabase().update(Slowka.TABLE_NAME,
+        dbHelper.getWritableDatabase().update(Slowka.TABLE_NAME,
                 contentValues,
-                 "_id = ? ",
+                "_id = ? ",
                 new String[]{slowko.get_id().toString()}
         );
     }
 
-    public void updateResetujWszystkieCzyUmie(){
-        Cursor cursor = dbManager.getReadableDatabase().query(Slowka.TABLE_NAME,
+    public void updateResetujWszystkieCzyUmie() {
+        Cursor cursor = dbHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -102,10 +101,24 @@ public class SlowkoDAO {
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                updateCzyUmie(mapCursorToSlowko(cursor),false);
+                updateCzyUmie(mapCursorToSlowko(cursor), false);
+            }
+        }
+    }
+
+    public int getIlePozostalo() {
+        Cursor cursor = dbHelper.getReadableDatabase()
+                .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
+
+        int counter = 0;
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                counter++;
             }
         }
 
+        return counter;
     }
 
 

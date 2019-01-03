@@ -13,14 +13,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onClickNauka(View v){
+    public void onClickNauka(View v) {
         Intent intent = new Intent(this, NaukaActivity.class);
         startActivity(intent);
 
     }
 
-    public void onClickZestawy(View v){
+    public void onClickZestawy(View v) {
         Intent intent = new Intent(this, ZestawyActivity.class);
+        startActivity(intent);
+    }
+
+
+    public void onClickPomoc(View v) {
+        Intent intent = new Intent(this, PomocActivity.class);
         startActivity(intent);
     }
 
