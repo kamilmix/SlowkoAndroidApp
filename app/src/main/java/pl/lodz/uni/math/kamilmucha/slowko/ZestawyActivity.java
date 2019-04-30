@@ -2,6 +2,8 @@ package pl.lodz.uni.math.kamilmucha.slowko;
 
 import android.content.DialogInterface;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.TestLooperManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
     private ListView listView;
     private ArrayAdapter<Slowko> adapter;
     private Button buttonDodaj;
+    private TextView przekazany;
+
+    private int idZestawu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +35,15 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         setContentView(R.layout.activity_zestawy);
         listView = findViewById(R.id.listView);
         buttonDodaj = findViewById(R.id.buttonOtworzDodaj);
+        przekazany = findViewById(R.id.textViewPrzekazany);
+
+        Intent intent = getIntent();
+        idZestawu = intent.getIntExtra("idZestawu", 1);
 
         slowkoDAO = new SlowkoDAO(this);
         reloadSlowkasList();
+
+
     }
 
 

@@ -31,4 +31,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void onClickMojeZestawy(View view) {
+        Intent intent = new Intent(this, MojeZestawyActivity.class);
+        startActivity(intent);
+    }
 }

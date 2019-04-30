@@ -27,6 +27,24 @@ public class SlowkoDAO {
         dbHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
     }
 
+    public void insertZestaw(final Zestaw zestaw){
+        ContentValues values = new ContentValues();
+        values.put("nazwa", zestaw.getNazwa());
+
+        dbHelper.getWritableDatabase().insert("ZESTAWY", null, values);
+    }
+
+    public void insertSlowko(final Slowko slowko, int idZestawu) {
+
+        ContentValues values = new ContentValues();
+        values.put("slowko", slowko.getSlowko());
+        values.put("tlumaczenie", slowko.getTlumaczenie());
+        values.put("czy_umie", false);
+        values.put("id_zestawu", idZestawu);
+
+        dbHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+    }
+
     public Slowko getSlowkoById(final int id) {
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
         if (cursor.getCount() == 1) {
@@ -136,4 +154,29 @@ public class SlowkoDAO {
 
         return slowko;
     }
+
+    public List getAllZestaws() {
+        Cursor cursor = dbHelper.getReadableDatabase().query("ZESTAWY",
+                new String[]{"_id", "nazwa"},
+                null, null, null, null, null
+        );
+
+        List results = new ArrayList<>();
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                results.add(mapCursorToZestaw(cursor));
+            }
+        }
+        return results;
+    }
+
+    private Zestaw mapCursorToZestaw(Cursor cursor) {
+        int idColumnId = cursor.getColumnIndex("_id");
+        int nazwaColumnId = cursor.getColumnIndex("nazwa");
+
+        Zestaw zestaw = new Zestaw(cursor.getInt(idColumnId), cursor.getString(nazwaColumnId));
+        return zestaw;
+    }
 }
+
