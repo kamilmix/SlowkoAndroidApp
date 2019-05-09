@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.Slowko;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 
 
 public class SlowkoListAdapter extends ArrayAdapter<Slowko> {

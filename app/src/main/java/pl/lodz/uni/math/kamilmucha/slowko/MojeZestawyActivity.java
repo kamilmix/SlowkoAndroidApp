@@ -10,21 +10,31 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.SlowkoDAO;
-import pl.lodz.uni.math.kamilmucha.slowko.database.Zestaw;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.ZestawDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 public class MojeZestawyActivity extends AppCompatActivity {
 
+    private static DatabaseHelper databaseHelper;
+
     private Button buttonDodaj;
     private EditText editTextNazwa;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moje_zestawy);
+
+        databaseHelper = new DatabaseHelper(this);
+        DatabaseManager.initializeInstance(databaseHelper);
+
         final SlowkoDAO slowkoDAO = new SlowkoDAO(this);
+        final ZestawDAO zestawDAO = new ZestawDAO();
 
         buttonDodaj = findViewById(R.id.buttonDodajZestaw);
         editTextNazwa = findViewById(R.id.editTextNazwaZestawu);
@@ -33,13 +43,13 @@ public class MojeZestawyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Zestaw zestaw = new Zestaw();
                 zestaw.setNazwa(editTextNazwa.getText().toString());
-                slowkoDAO.insertZestaw(zestaw);
+                zestawDAO.insertZestaw(zestaw);
             }
         });
 
 
 
-        ArrayList<Zestaw> zestawy = (ArrayList<Zestaw>) slowkoDAO.getAllZestaws();
+        ArrayList<Zestaw> zestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
 
         RecyclerView recyclerView = findViewById(R.id.RecyclerViewZestawy);
 

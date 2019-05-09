@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.kamilmucha.slowko.database;
+package pl.lodz.uni.math.kamilmucha.slowko.database.model;
 
 public class Slowko {
     private Integer _id;

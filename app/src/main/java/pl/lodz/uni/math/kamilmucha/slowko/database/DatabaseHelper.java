@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class DbHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "Database";
@@ -36,7 +36,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DROP_TABLE_ZESTAWY = "DROP TABLE IF EXISTS ZESTAWY";
     private static final String DROP_TABLE_SLOWKA = "DROP TABLE IF EXISTS SLOWKA";
 
-    public DbHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

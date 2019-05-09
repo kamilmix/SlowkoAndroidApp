@@ -1,19 +1,26 @@
-package pl.lodz.uni.math.kamilmucha.slowko.database;
+package pl.lodz.uni.math.kamilmucha.slowko.database.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
+import pl.lodz.uni.math.kamilmucha.slowko.database.Slowka;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
+
 public class SlowkoDAO {
-    private DbHelper dbHelper;
+    private DatabaseHelper databaseHelper;
     private Random randomGenerator;
 
     public SlowkoDAO(Context context) {
-        dbHelper = new DbHelper(context);
+        databaseHelper = new DatabaseHelper(context);
         randomGenerator = new Random();
     }
 
@@ -24,29 +31,23 @@ public class SlowkoDAO {
         values.put("tlumaczenie", slowko.getTlumaczenie());
         values.put("czy_umie", false);
 
-        dbHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+        databaseHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
     }
 
-    public void insertZestaw(final Zestaw zestaw){
-        ContentValues values = new ContentValues();
-        values.put("nazwa", zestaw.getNazwa());
 
-        dbHelper.getWritableDatabase().insert("ZESTAWY", null, values);
-    }
-
-    public void insertSlowko(final Slowko slowko, int idZestawu) {
+    public void insertSlowko(final Slowko slowko, final Zestaw zestaw) {
 
         ContentValues values = new ContentValues();
         values.put("slowko", slowko.getSlowko());
         values.put("tlumaczenie", slowko.getTlumaczenie());
         values.put("czy_umie", false);
-        values.put("id_zestawu", idZestawu);
+        values.put("id_zestawu", zestaw.getId());
 
-        dbHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+        databaseHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
     }
 
     public Slowko getSlowkoById(final int id) {
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
+        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             return mapCursorToSlowko(cursor);
@@ -55,7 +56,7 @@ public class SlowkoDAO {
     }
 
     public void deleteSlowkoById(final Integer id) {
-        dbHelper.getWritableDatabase().delete(Slowka.TABLE_NAME,
+        databaseHelper.getWritableDatabase().delete(Slowka.TABLE_NAME,
                 " " + "_id" + " = ? ",
                 new String[]{id.toString()}
         );
@@ -63,7 +64,7 @@ public class SlowkoDAO {
 
 
     public List getAllSlowkas() {
-        Cursor cursor = dbHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
+        Cursor cursor = databaseHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -79,7 +80,7 @@ public class SlowkoDAO {
     }
 
     public Slowko getRandomSlowko() {
-        Cursor cursor = dbHelper.getReadableDatabase()
+        Cursor cursor = databaseHelper.getReadableDatabase()
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
         List results = new ArrayList<Slowko>();
@@ -103,7 +104,7 @@ public class SlowkoDAO {
         contentValues.put("tlumaczenie", slowko.getTlumaczenie());
         contentValues.put("czy_umie", czyUmie);
 
-        dbHelper.getWritableDatabase().update(Slowka.TABLE_NAME,
+        databaseHelper.getWritableDatabase().update(Slowka.TABLE_NAME,
                 contentValues,
                 "_id = ? ",
                 new String[]{slowko.get_id().toString()}
@@ -111,7 +112,7 @@ public class SlowkoDAO {
     }
 
     public void updateResetujWszystkieCzyUmie() {
-        Cursor cursor = dbHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
+        Cursor cursor = databaseHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -125,7 +126,7 @@ public class SlowkoDAO {
     }
 
     public int getIlePozostalo() {
-        Cursor cursor = dbHelper.getReadableDatabase()
+        Cursor cursor = databaseHelper.getReadableDatabase()
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
         int counter = 0;
@@ -153,30 +154,6 @@ public class SlowkoDAO {
         slowko.setCzyUmie(cursor.getInt(czyUmieColumnId));
 
         return slowko;
-    }
-
-    public List getAllZestaws() {
-        Cursor cursor = dbHelper.getReadableDatabase().query("ZESTAWY",
-                new String[]{"_id", "nazwa"},
-                null, null, null, null, null
-        );
-
-        List results = new ArrayList<>();
-
-        if (cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-                results.add(mapCursorToZestaw(cursor));
-            }
-        }
-        return results;
-    }
-
-    private Zestaw mapCursorToZestaw(Cursor cursor) {
-        int idColumnId = cursor.getColumnIndex("_id");
-        int nazwaColumnId = cursor.getColumnIndex("nazwa");
-
-        Zestaw zestaw = new Zestaw(cursor.getInt(idColumnId), cursor.getString(nazwaColumnId));
-        return zestaw;
     }
 }
 

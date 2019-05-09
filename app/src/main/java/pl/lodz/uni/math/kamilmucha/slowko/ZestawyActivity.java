@@ -3,7 +3,6 @@ package pl.lodz.uni.math.kamilmucha.slowko;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.TestLooperManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.Slowko;
-import pl.lodz.uni.math.kamilmucha.slowko.database.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
 public class ZestawyActivity extends AppCompatActivity implements DodajDialog.DodajDialogListener {
 

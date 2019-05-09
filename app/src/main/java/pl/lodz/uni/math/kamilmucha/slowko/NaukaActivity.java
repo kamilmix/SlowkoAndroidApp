@@ -8,8 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.Slowko;
-import pl.lodz.uni.math.kamilmucha.slowko.database.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
 public class NaukaActivity extends AppCompatActivity {
 

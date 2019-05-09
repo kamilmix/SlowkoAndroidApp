@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.Zestaw;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 class ZestawyAdapter extends RecyclerView.Adapter {
     private ArrayList<Zestaw> zestawy;
