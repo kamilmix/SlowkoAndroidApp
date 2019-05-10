@@ -38,10 +38,13 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
 
         Intent intent = getIntent();
         idZestawu = intent.getIntExtra("idZestawu", 1);
+        String nazwaZestawu = intent.getStringExtra("nazwaZestawu");
 
         slowkoDAO = new SlowkoDAO(this);
         reloadSlowkasList();
 
+
+        przekazany.setText(nazwaZestawu);
 
     }
 

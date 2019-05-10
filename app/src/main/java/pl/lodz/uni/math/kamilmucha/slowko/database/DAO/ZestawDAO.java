@@ -18,6 +18,7 @@ public class ZestawDAO {
         values.put("nazwa", zestaw.getNazwa());
 
         db.insert("ZESTAWY", null, values);
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     public List getAllZestaws() {
@@ -34,7 +35,9 @@ public class ZestawDAO {
                 results.add(mapCursorToZestaw(cursor));
             }
         }
+        DatabaseManager.getInstance().closeDatabase();
         return results;
+
     }
 
     private Zestaw mapCursorToZestaw(Cursor cursor) {

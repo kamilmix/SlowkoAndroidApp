@@ -1,6 +1,8 @@
 package pl.lodz.uni.math.kamilmucha.slowko;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 class ZestawyAdapter extends RecyclerView.Adapter {
+    public static final String EXTRA_MESSAGE = "pl.lodz.uni.math.kamilmucha.slowko.ZESTAW";
     private ArrayList<Zestaw> zestawy;
     private RecyclerView recyclerView;
 
@@ -47,8 +50,33 @@ class ZestawyAdapter extends RecyclerView.Adapter {
                Context context = v.getContext();
                Intent intent = new Intent(context, ZestawyActivity.class);
                intent.putExtra("idZestawu", zestawy.get(position).getId());
+               intent.putExtra("nazwaZestawu", zestawy.get(position).getNazwa());
                context.startActivity(intent);
            }
+       });
+
+       view.setOnLongClickListener(new View.OnLongClickListener() {
+           @Override
+           public boolean onLongClick(View v) {
+               new AlertDialog.Builder(v.getContext())
+                       .setTitle("Delete entry")
+                       .setMessage("Are you sure you want to delete this entry?")
+
+                       // Specifying a listener allows you to take an action before dismissing the dialog.
+                       // The dialog is automatically dismissed when a dialog button is clicked.
+                       .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int which) {
+                               // Continue with delete operation
+                           }
+                       })
+
+                       // A null listener allows the button to dismiss the dialog and take no further action.
+                       .setNegativeButton(android.R.string.no, null)
+                       .setIcon(android.R.drawable.ic_dialog_alert)
+                       .show();
+               return true;
+           }
+
        });
 
        return new MyViewHolder(view);
