@@ -25,7 +25,6 @@ public class SlowkoDAO {
     }
 
     public void insertSlowko(final Slowko slowko) {
-
         ContentValues values = new ContentValues();
         values.put("slowko", slowko.getSlowko());
         values.put("tlumaczenie", slowko.getTlumaczenie());
@@ -35,15 +34,16 @@ public class SlowkoDAO {
     }
 
 
-    public void insertSlowko(final Slowko slowko, final Zestaw zestaw) {
-
+    public void insertSlowko(final Slowko slowko, int idZestawu) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put("slowko", slowko.getSlowko());
         values.put("tlumaczenie", slowko.getTlumaczenie());
         values.put("czy_umie", false);
-        values.put("id_zestawu", zestaw.getId());
+        values.put("id_zestawu", idZestawu);
 
-        databaseHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+        db.insert(Slowka.TABLE_NAME, null, values);
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     public Slowko getSlowkoById(final int id) {
@@ -79,8 +79,27 @@ public class SlowkoDAO {
         return results;
     }
 
+    public List getAllSlowkas(int idZestawu) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.query(Slowka.TABLE_NAME,
+                new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
+                "id_zestawu=" + idZestawu, null, null, null, null
+        );
+
+        List results = new ArrayList<>();
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                results.add(mapCursorToSlowko(cursor));
+            }
+        }
+        DatabaseManager.getInstance().closeDatabase();
+        return results;
+    }
+
     public Slowko getRandomSlowko() {
-        Cursor cursor = databaseHelper.getReadableDatabase()
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
         List results = new ArrayList<Slowko>();
@@ -90,7 +109,7 @@ public class SlowkoDAO {
                 results.add(mapCursorToSlowko(cursor));
             }
         }
-
+        DatabaseManager.getInstance().closeDatabase();
         int index = randomGenerator.nextInt(results.size());
 
         Slowko slowko;
@@ -99,20 +118,23 @@ public class SlowkoDAO {
     }
 
     public void updateCzyUmie(final Slowko slowko, boolean czyUmie) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("slowko", slowko.getSlowko());
         contentValues.put("tlumaczenie", slowko.getTlumaczenie());
         contentValues.put("czy_umie", czyUmie);
 
-        databaseHelper.getWritableDatabase().update(Slowka.TABLE_NAME,
+        db.update(Slowka.TABLE_NAME,
                 contentValues,
                 "_id = ? ",
                 new String[]{slowko.get_id().toString()}
         );
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     public void updateResetujWszystkieCzyUmie() {
-        Cursor cursor = databaseHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -123,10 +145,12 @@ public class SlowkoDAO {
                 updateCzyUmie(mapCursorToSlowko(cursor), false);
             }
         }
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     public int getIlePozostalo() {
-        Cursor cursor = databaseHelper.getReadableDatabase()
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
         int counter = 0;
@@ -136,6 +160,8 @@ public class SlowkoDAO {
                 counter++;
             }
         }
+
+        DatabaseManager.getInstance().closeDatabase();
 
         return counter;
     }

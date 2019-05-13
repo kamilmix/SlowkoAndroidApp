@@ -43,15 +43,13 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         slowkoDAO = new SlowkoDAO(this);
         reloadSlowkasList();
 
-
         przekazany.setText(nazwaZestawu);
-
     }
 
 
     private void reloadSlowkasList() {
         // pobieramy z bazy danych listę slowek
-        final ArrayList<Slowko> allSlowkasList = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas();
+        final ArrayList<Slowko> allSlowkasList = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas(idZestawu);
 
         SlowkoListAdapter slowkoListAdapter = new SlowkoListAdapter(this, R.layout.slowko_layout, allSlowkasList);
         listView.setAdapter(slowkoListAdapter);
@@ -80,7 +78,6 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
                 alert.show();
             }
         });
-
     }
 
     private void removeSlowko(Slowko id) {
@@ -100,8 +97,8 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
 
     @Override
     public void przeslijSlowko(String slowko, String tlumaczenie) {
-        slowkoDAO.insertSlowko(new Slowko(slowko, tlumaczenie));
-        List<Slowko> allSlowkasList = slowkoDAO.getAllSlowkas();
+        slowkoDAO.insertSlowko(new Slowko(slowko, tlumaczenie),idZestawu);
+       // List<Slowko> allSlowkasList = slowkoDAO.getAllSlowkas();
         reloadSlowkasList();
     }
 

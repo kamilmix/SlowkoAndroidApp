@@ -21,6 +21,16 @@ public class ZestawDAO {
         DatabaseManager.getInstance().closeDatabase();
     }
 
+    public void delete(int idZestawu){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        db.delete("ZESTAWY",
+                " " + "_id" + " = ? ",
+                new String[]{String.valueOf(idZestawu)}
+                );
+
+        DatabaseManager.getInstance().closeDatabase();
+    }
+
     public List getAllZestaws() {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.query("ZESTAWY",

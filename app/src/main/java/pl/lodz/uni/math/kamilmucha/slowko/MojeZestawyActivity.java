@@ -19,11 +19,9 @@ import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 public class MojeZestawyActivity extends AppCompatActivity {
-
-    private ZestawDAO zestawDAO;
-
     private static DatabaseHelper databaseHelper;
 
+    private ZestawDAO zestawDAO;
     private ArrayList<Zestaw> zestawy;
 
     private Button buttonDodaj;
@@ -39,44 +37,41 @@ public class MojeZestawyActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         DatabaseManager.initializeInstance(databaseHelper);
 
-        final SlowkoDAO slowkoDAO = new SlowkoDAO(this);
         zestawDAO = new ZestawDAO();
 
         buttonDodaj = findViewById(R.id.buttonDodajZestaw);
+        buttonDodaj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonDodajClicked();
+            }
+        });
+
         editTextNazwa = findViewById(R.id.editTextNazwaZestawu);
-
-
-
 
         zestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
 
         RecyclerView recyclerView = findViewById(R.id.RecyclerViewZestawy);
-
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         zestawyAdapter = new ZestawyAdapter(zestawy, recyclerView);
         recyclerView.setAdapter(zestawyAdapter);
 
-        buttonDodaj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Zestaw zestaw = new Zestaw();
-                zestaw.setNazwa(editTextNazwa.getText().toString());
-                zestawDAO.insertZestaw(zestaw);
-                updateZestawy();
-
-            }
-        });
 
     }
 
-    private void updateZestawy(){
-        ArrayList<Zestaw> nowyZestaw = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
-        zestawy.add(nowyZestaw.get(nowyZestaw.size()-1));
-        zestawyAdapter.notifyDataSetChanged();
+    private void buttonDodajClicked() {
+        Zestaw zestaw = new Zestaw();
+        zestaw.setNazwa(editTextNazwa.getText().toString());
+        zestawDAO.insertZestaw(zestaw);
+        updateZestawy();
+    }
 
+    private void updateZestawy(){
+        ArrayList<Zestaw> noweZestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
+        zestawy.add(noweZestawy.get(noweZestawy.size()-1));
+        zestawyAdapter.notifyDataSetChanged();
     }
 }

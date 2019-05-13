@@ -13,12 +13,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.ZestawDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 class ZestawyAdapter extends RecyclerView.Adapter {
     public static final String EXTRA_MESSAGE = "pl.lodz.uni.math.kamilmucha.slowko.ZESTAW";
     private ArrayList<Zestaw> zestawy;
     private RecyclerView recyclerView;
+
+    private static DatabaseHelper databaseHelper;
+
+    private ZestawDAO zestawDAO;
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mNazwaZestawu;
@@ -42,6 +48,8 @@ class ZestawyAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.zestaw_layout, viewGroup, false);
+       databaseHelper = new DatabaseHelper(view.getContext());
+       zestawDAO = new ZestawDAO();
 
        view.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -57,7 +65,7 @@ class ZestawyAdapter extends RecyclerView.Adapter {
 
        view.setOnLongClickListener(new View.OnLongClickListener() {
            @Override
-           public boolean onLongClick(View v) {
+           public boolean onLongClick(final View v) {
                new AlertDialog.Builder(v.getContext())
                        .setTitle("Delete entry")
                        .setMessage("Are you sure you want to delete this entry?")
@@ -66,7 +74,10 @@ class ZestawyAdapter extends RecyclerView.Adapter {
                        // The dialog is automatically dismissed when a dialog button is clicked.
                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int which) {
-                               // Continue with delete operation
+                               int position = recyclerView.getChildAdapterPosition(v);
+                               zestawDAO.delete(zestawy.get(position).getId());
+                               zestawy.remove(position);
+                               notifyItemRemoved(position);
                            }
                        })
 

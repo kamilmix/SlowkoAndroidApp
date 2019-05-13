@@ -5,20 +5,25 @@ public class Slowko {
     private String slowko;
     private String tlumaczenie;
     private boolean czyUmie;
+    private int idZestawu;
 
-    public Slowko(){};
-
-    public Slowko(String slowko, String tlumaczenie){
-        this.slowko = slowko;
-        this.tlumaczenie = tlumaczenie;
-        czyUmie=false;
+    public Slowko() {
     }
 
-    public Slowko(int id, String slowko, String tlumaczenie, boolean czyUmie){
+    ;
+
+    public Slowko(String slowko, String tlumaczenie) {
+        this.slowko = slowko;
+        this.tlumaczenie = tlumaczenie;
+        czyUmie = false;
+    }
+
+    public Slowko(int id, String slowko, String tlumaczenie, boolean czyUmie, int idZestawu) {
         this._id = id;
         this.slowko = slowko;
         this.tlumaczenie = tlumaczenie;
-        this.czyUmie=czyUmie;
+        this.czyUmie = czyUmie;
+        this.idZestawu = idZestawu;
     }
 
 
@@ -55,11 +60,10 @@ public class Slowko {
     }
 
     public void setCzyUmie(int anInt) {
-        if(anInt==1){
-            czyUmie= true;
-        }
-        else if (anInt==0){
-            czyUmie=false;
+        if (anInt == 1) {
+            czyUmie = true;
+        } else if (anInt == 0) {
+            czyUmie = false;
         }
     }
 
