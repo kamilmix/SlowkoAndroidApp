@@ -31,6 +31,14 @@ public class ZestawDAO {
         DatabaseManager.getInstance().closeDatabase();
     }
 
+    public void rename(int idZestawu, String nazwa){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nazwa", nazwa);
+        db.update("ZESTAWY", values, "_id=" + idZestawu, null);
+        DatabaseManager.getInstance().closeDatabase();
+    }
+
     public List getAllZestaws() {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.query("ZESTAWY",

@@ -58,8 +58,12 @@ public class MojeZestawyActivity extends AppCompatActivity {
 
         zestawyAdapter = new ZestawyAdapter(zestawy, recyclerView);
         recyclerView.setAdapter(zestawyAdapter);
+    }
 
-
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        zestawyAdapter.notifyDataSetChanged();
     }
 
     private void buttonDodajClicked() {

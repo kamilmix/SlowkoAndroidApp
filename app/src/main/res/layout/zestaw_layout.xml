@@ -3,6 +3,7 @@
 <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -19,13 +20,38 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/nazwa_zestawu"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nazwa_zestawu"
+                android:layout_width="338dp"
+                android:layout_height="wrap_content"
+                android:text="Zestaw"
+                android:textColor="#333"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textViewLiczbaSlowekWZestawie"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom|right"
+                tools:text="4/10" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBarIleDoNauki"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zestaw"
-            android:textColor="#333"
-            android:textSize="20sp" />
+            android:max="10"
+            android:paddingBottom="10dp"
+            android:progress="4"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

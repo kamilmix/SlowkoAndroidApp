@@ -15,11 +15,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
 public class ZestawyActivity extends AppCompatActivity implements DodajDialog.DodajDialogListener {
-
     private SlowkoDAO slowkoDAO;
     private ListView listView;
     private ArrayAdapter<Slowko> adapter;
@@ -40,7 +41,9 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
         idZestawu = intent.getIntExtra("idZestawu", 1);
         String nazwaZestawu = intent.getStringExtra("nazwaZestawu");
 
-        slowkoDAO = new SlowkoDAO(this);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        DatabaseManager.initializeInstance(databaseHelper);
+        slowkoDAO = new SlowkoDAO();
         reloadSlowkasList();
 
         przekazany.setText(nazwaZestawu);

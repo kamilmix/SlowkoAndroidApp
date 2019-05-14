@@ -10,7 +10,6 @@ public class Slowko {
     public Slowko() {
     }
 
-    ;
 
     public Slowko(String slowko, String tlumaczenie) {
         this.slowko = slowko;

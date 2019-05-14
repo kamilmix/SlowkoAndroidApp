@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
@@ -27,7 +29,10 @@ public class NaukaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nauka);
-        slowkoDAO = new SlowkoDAO(this);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        DatabaseManager.initializeInstance(databaseHelper);
+
+        slowkoDAO = new SlowkoDAO();
 
         textView = findViewById(R.id.textView);
         textViewCzyDobrze = findViewById(R.id.textViewCzyDobrze);

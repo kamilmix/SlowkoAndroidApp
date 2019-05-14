@@ -3,6 +3,7 @@ package pl.lodz.uni.math.kamilmucha.slowko.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -16,21 +17,21 @@ import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
 public class SlowkoDAO {
-    private DatabaseHelper databaseHelper;
     private Random randomGenerator;
 
-    public SlowkoDAO(Context context) {
-        databaseHelper = new DatabaseHelper(context);
+    public SlowkoDAO() {
         randomGenerator = new Random();
     }
 
     public void insertSlowko(final Slowko slowko) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put("slowko", slowko.getSlowko());
         values.put("tlumaczenie", slowko.getTlumaczenie());
         values.put("czy_umie", false);
 
-        databaseHelper.getWritableDatabase().insert(Slowka.TABLE_NAME, null, values);
+        db.insert(Slowka.TABLE_NAME, null, values);
+        DatabaseManager.getInstance().closeDatabase();
     }
 
 
@@ -47,7 +48,9 @@ public class SlowkoDAO {
     }
 
     public Slowko getSlowkoById(final int id) {
-        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
+        DatabaseManager.getInstance().closeDatabase();
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             return mapCursorToSlowko(cursor);
@@ -56,15 +59,18 @@ public class SlowkoDAO {
     }
 
     public void deleteSlowkoById(final Integer id) {
-        databaseHelper.getWritableDatabase().delete(Slowka.TABLE_NAME,
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        db.delete(Slowka.TABLE_NAME,
                 " " + "_id" + " = ? ",
                 new String[]{id.toString()}
         );
+        DatabaseManager.getInstance().closeDatabase();
     }
 
 
     public List getAllSlowkas() {
-        Cursor cursor = databaseHelper.getReadableDatabase().query(Slowka.TABLE_NAME,
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
@@ -76,6 +82,7 @@ public class SlowkoDAO {
                 results.add(mapCursorToSlowko(cursor));
             }
         }
+        DatabaseManager.getInstance().closeDatabase();
         return results;
     }
 
@@ -162,9 +169,27 @@ public class SlowkoDAO {
         }
 
         DatabaseManager.getInstance().closeDatabase();
-
         return counter;
     }
+
+    public int getCount(int idZestawu){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        long taskCount = DatabaseUtils.longForQuery(db, "SELECT COUNT (*) FROM SLOWKA WHERE id_zestawu=?",
+                new String[] { String.valueOf(idZestawu) });
+
+        DatabaseManager.getInstance().closeDatabase();
+        return (int) taskCount;
+    }
+
+    public int getCountPozostaleDoNauki(int idZestawu){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        long taskCount = DatabaseUtils.longForQuery(db, "SELECT COUNT (*) FROM SLOWKA WHERE id_zestawu=? AND czy_umie=1",
+                new String[] { String.valueOf(idZestawu) });
+
+        DatabaseManager.getInstance().closeDatabase();
+        return (int) taskCount;
+    }
+
 
 
     private Slowko mapCursorToSlowko(final Cursor cursor) {
