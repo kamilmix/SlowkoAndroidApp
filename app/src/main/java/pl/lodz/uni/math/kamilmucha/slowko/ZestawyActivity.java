@@ -13,14 +13,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
-public class ZestawyActivity extends AppCompatActivity implements DodajDialog.DodajDialogListener {
+public class ZestawyActivity extends AppCompatActivity implements DodajSlowkoDialog.DodajDialogListener {
     private SlowkoDAO slowkoDAO;
     private ListView listView;
     private ArrayAdapter<Slowko> adapter;
@@ -89,7 +88,7 @@ public class ZestawyActivity extends AppCompatActivity implements DodajDialog.Do
     }
 
     protected void onClickButtonOtworzDialog(View view) {
-        DodajDialog dodajDialog = new DodajDialog();
+        DodajSlowkoDialog dodajDialog = new DodajSlowkoDialog();
         dodajDialog.show(getSupportFragmentManager(), "dialog dodaj");
     }
 

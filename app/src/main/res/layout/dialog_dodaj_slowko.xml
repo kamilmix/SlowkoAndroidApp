@@ -20,7 +20,4 @@
         android:hint="tłumaczenie"
         android:layout_alignParentLeft="true" />
 
-
-
-
 </RelativeLayout>

@@ -11,19 +11,19 @@ import android.view.View;
 import android.widget.EditText;
 
 
-public class DodajDialog extends AppCompatDialogFragment {
-    private EditText editTextSlowko;
-    private EditText editTextTlumaczenie;
-    private DodajDialogListener listener;
+public class DodajZestawDialog extends AppCompatDialogFragment {
+    private EditText editTextZestaw;
+
+    private DodajZestawDialogListener listener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_dodaj, null);
+        View view = inflater.inflate(R.layout.dialog_dodaj_zestaw, null);
 
         builder.setView(view)
-                .setTitle("Dodaj słówko")
+                .setTitle("Dodaj zestaw")
                 .setNegativeButton("anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -33,13 +33,12 @@ public class DodajDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String slowko = editTextSlowko.getText().toString();
-                        String tlumaczenie = editTextTlumaczenie.getText().toString();
-                        listener.przeslijSlowko(slowko, tlumaczenie);
+                        String nazwaZestawu = editTextZestaw.getText().toString();
+                        listener.przeslijZestaw(nazwaZestawu);
                     }
                 });
-        editTextSlowko = view.findViewById(R.id.dialogEditTextSlowko);
-        editTextTlumaczenie = view.findViewById(R.id.dialogEditTextTlumaczenie);
+        editTextZestaw = view.findViewById(R.id.editTextDialogDodajZestaw);
+
 
         return builder.create();
     }
@@ -49,13 +48,13 @@ public class DodajDialog extends AppCompatDialogFragment {
         super.onAttach(context);
 
         try {
-            listener = (DodajDialogListener) context;
+            listener = (DodajZestawDialogListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "Zaimplement DodajDialogListener");
         }
     }
 
-    public interface DodajDialogListener {
-        void przeslijSlowko(String slowko, String tlumaczenie);
+    public interface DodajZestawDialogListener {
+        void przeslijZestaw(String nazwa);
     }
 }

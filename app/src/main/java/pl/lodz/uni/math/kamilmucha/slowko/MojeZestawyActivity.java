@@ -6,25 +6,24 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Button;
+
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
-import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.ZestawDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
-public class MojeZestawyActivity extends AppCompatActivity {
+public class MojeZestawyActivity extends AppCompatActivity implements DodajZestawDialog.DodajZestawDialogListener {
     private static DatabaseHelper databaseHelper;
 
     private ZestawDAO zestawDAO;
     private ArrayList<Zestaw> zestawy;
 
-    private Button buttonDodaj;
+    private ImageButton buttonDodaj;
     private EditText editTextNazwa;
     private ZestawyAdapter zestawyAdapter;
 
@@ -39,7 +38,7 @@ public class MojeZestawyActivity extends AppCompatActivity {
 
         zestawDAO = new ZestawDAO();
 
-        buttonDodaj = findViewById(R.id.buttonDodajZestaw);
+        buttonDodaj = findViewById(R.id.imageButtonDodajZestaw);
         buttonDodaj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,15 +66,21 @@ public class MojeZestawyActivity extends AppCompatActivity {
     }
 
     private void buttonDodajClicked() {
-        Zestaw zestaw = new Zestaw();
-        zestaw.setNazwa(editTextNazwa.getText().toString());
-        zestawDAO.insertZestaw(zestaw);
-        updateZestawy();
+        DodajZestawDialog dodajZestawDialog = new DodajZestawDialog();
+        dodajZestawDialog.show(getSupportFragmentManager(), "dialog dodaj zestaw");
     }
 
-    private void updateZestawy(){
+    private void updateZestawy() {
         ArrayList<Zestaw> noweZestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
-        zestawy.add(noweZestawy.get(noweZestawy.size()-1));
+        zestawy.add(noweZestawy.get(noweZestawy.size() - 1));
         zestawyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void przeslijZestaw(String nazwa) {
+        Zestaw zestaw = new Zestaw();
+        zestaw.setNazwa(nazwa);
+        zestawDAO.insertZestaw(zestaw);
+        updateZestawy();
     }
 }
