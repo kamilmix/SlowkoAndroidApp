@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +26,7 @@ public class DodajZestawDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Dodaj zestaw")
-                .setNegativeButton("anuluj", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -37,8 +39,30 @@ public class DodajZestawDialog extends AppCompatDialogFragment {
                         listener.przeslijZestaw(nazwaZestawu);
                     }
                 });
-        editTextZestaw = view.findViewById(R.id.editTextDialogDodajZestaw);
 
+        editTextZestaw = view.findViewById(R.id.editTextDialogDodajZestaw);
+        editTextZestaw.addTextChangedListener(new TextWatcher() {
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!editTextZestaw.getText().toString().equals("")) {
+                    okButtonEnabled(true);
+                } else {
+                    okButtonEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         return builder.create();
     }
@@ -52,6 +76,17 @@ public class DodajZestawDialog extends AppCompatDialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "Zaimplement DodajDialogListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        okButtonEnabled(false);
+    }
+
+    private void okButtonEnabled(boolean condition) {
+        AlertDialog dialog = (AlertDialog) getDialog();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(condition);
     }
 
     public interface DodajZestawDialogListener {
