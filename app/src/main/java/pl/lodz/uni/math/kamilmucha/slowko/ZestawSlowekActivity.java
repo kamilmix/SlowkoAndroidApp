@@ -11,13 +11,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 
-public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlowkoDialog.DodajDialogListener {
+public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlowkoDialog.DodajDialogListener, EdytujSlowkoDialog.EdytujSlowkoListener {
     private SlowkoDAO slowkoDAO;
     private Button buttonDodaj;
     private TextView przekazany;
@@ -51,13 +52,8 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        slowkaWZestawieAdapter = new SlowkaWZestawieAdapter(slowka, recyclerView);
+        slowkaWZestawieAdapter = new SlowkaWZestawieAdapter(slowka, recyclerView, this);
         recyclerView.setAdapter(slowkaWZestawieAdapter);
-    }
-
-    private void removeSlowko(Slowko id) {
-        slowkoDAO.deleteSlowkoById(id.get_id());
-        //  reloadSlowkasList();
     }
 
     protected void onClickButtonOtworzDialog(View view) {
@@ -67,15 +63,21 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
     protected void onClickButtonResetujWszystkie(View view) {
         slowkoDAO.updateResetujWszystkieCzyUmie();
-        //  reloadSlowkasList();
     }
 
     @Override
     public void przeslijSlowko(String slowko, String tlumaczenie) {
         slowkoDAO.insertSlowko(new Slowko(slowko, tlumaczenie), idZestawu);
-        ArrayList<Slowko> allSlowkasList = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas();
+        ArrayList<Slowko> allSlowkasList = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas(idZestawu);
         slowka.add(allSlowkasList.get(allSlowkasList.size() - 1));
         slowkaWZestawieAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void przeslijEdytowaneSlowko(Slowko slowko) {
+        ArrayList<Slowko> slowkaNowe = new ArrayList<Slowko>();
+        slowkaNowe = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas(idZestawu);
+        Collections.copy(slowka, slowkaNowe);
+        slowkaWZestawieAdapter.notifyDataSetChanged();
+    }
 }

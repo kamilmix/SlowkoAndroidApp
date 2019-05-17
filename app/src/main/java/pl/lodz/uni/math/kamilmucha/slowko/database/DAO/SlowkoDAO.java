@@ -50,9 +50,9 @@ public class SlowkoDAO {
     public Slowko getSlowkoById(final int id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.rawQuery("select * from " + Slowka.TABLE_NAME + " where _id  = " + id, null);
-        DatabaseManager.getInstance().closeDatabase();
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
+            DatabaseManager.getInstance().closeDatabase();
             return mapCursorToSlowko(cursor);
         }
         return null;
@@ -122,6 +122,16 @@ public class SlowkoDAO {
         Slowko slowko;
         slowko = (Slowko) results.get(index);
         return slowko;
+    }
+
+    public void update(Slowko slowko) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+        values.put("slowko", slowko.getSlowko());
+        values.put("tlumaczenie", slowko.getTlumaczenie());
+        values.put("czy_umie", slowko.isCzyUmie());
+        db.update(Slowka.TABLE_NAME, values, "_id=" + slowko.get_id(), null);
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     public void updateCzyUmie(final Slowko slowko, boolean czyUmie) {

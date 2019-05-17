@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
+import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
+
 
 public class DodajSlowkoDialog extends AppCompatDialogFragment {
     private EditText editTextSlowko;
@@ -47,6 +51,8 @@ public class DodajSlowkoDialog extends AppCompatDialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        DatabaseManager.initializeInstance(databaseHelper);
 
         try {
             listener = (DodajDialogListener) context;
