@@ -67,7 +67,7 @@ class ZestawyAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 int position = recyclerView.getChildAdapterPosition(v);
                 Context context = v.getContext();
-                Intent intent = new Intent(context, ZestawyActivity.class);
+                Intent intent = new Intent(context, ZestawSlowekActivity.class);
                 intent.putExtra("idZestawu", zestawy.get(position).getId());
                 intent.putExtra("nazwaZestawu", zestawy.get(position).getNazwa());
                 context.startActivity(intent);

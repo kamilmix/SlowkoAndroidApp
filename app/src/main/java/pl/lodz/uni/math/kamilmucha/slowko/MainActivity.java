@@ -20,19 +20,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickZestawy(View v) {
-        Intent intent = new Intent(this, ZestawyActivity.class);
+        Intent intent = new Intent(this, MojeZestawyActivity.class);
         startActivity(intent);
     }
 
 
     public void onClickPomoc(View v) {
         Intent intent = new Intent(this, PomocActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void onClickMojeZestawy(View view) {
-        Intent intent = new Intent(this, MojeZestawyActivity.class);
         startActivity(intent);
     }
 }

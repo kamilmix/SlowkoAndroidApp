@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NaukaActivity" />
-        <activity android:name=".ZestawyActivity" />
+        <activity android:name=".ZestawSlowekActivity" />
         <activity android:name=".PomocActivity" />
     </application>
 

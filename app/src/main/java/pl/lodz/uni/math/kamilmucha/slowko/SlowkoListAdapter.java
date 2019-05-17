@@ -43,11 +43,11 @@ public class SlowkoListAdapter extends ArrayAdapter<Slowko> {
 
         TextView slowkoTextView = convertView.findViewById(R.id.slowko_layout_slowko);
         TextView tlumaczenieTextView = convertView.findViewById(R.id.slowko_layout_tlumaczenie);
-        final CheckBox czyUmieTextBox = convertView.findViewById(R.id.slowko_layout_checkbox);
+       // final CheckBox czyUmieTextBox = convertView.findViewById(R.id.slowko_layout_checkbox);
 
         slowkoTextView.setText(slowko);
         tlumaczenieTextView.setText(tlumaczenie);
-        czyUmieTextBox.setChecked(czyUmie);
+     //   czyUmieTextBox.setChecked(czyUmie);
 
 
         slowkoTextView.setOnClickListener(new View.OnClickListener() {
@@ -66,12 +66,12 @@ public class SlowkoListAdapter extends ArrayAdapter<Slowko> {
         });
 
 
-        czyUmieTextBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(mContext, "CheckBox Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+     //   czyUmieTextBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      //      @Override
+     //       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+     //           Toast.makeText(mContext, "CheckBox Clicked", Toast.LENGTH_SHORT).show();
+    //        }
+    //    });
 
         return convertView;
 
