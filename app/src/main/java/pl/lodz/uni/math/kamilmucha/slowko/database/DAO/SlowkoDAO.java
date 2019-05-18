@@ -124,6 +124,26 @@ public class SlowkoDAO {
         return slowko;
     }
 
+    public Slowko getRandomSlowko(int idZestawu) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db
+                .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0  AND id_zestawu=" + idZestawu, null);
+
+        List results = new ArrayList<Slowko>();
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                results.add(mapCursorToSlowko(cursor));
+            }
+        }
+        DatabaseManager.getInstance().closeDatabase();
+        int index = randomGenerator.nextInt(results.size());
+
+        Slowko slowko;
+        slowko = (Slowko) results.get(index);
+        return slowko;
+    }
+
     public void update(Slowko slowko) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
@@ -149,11 +169,11 @@ public class SlowkoDAO {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    public void updateResetujWszystkieCzyUmie() {
+    public void updateResetujWszystkieCzyUmie(int idZestawu) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
-                null, null, null, null, null
+                "id_zestawu=" + idZestawu, null, null, null, null
         );
 
 
@@ -191,7 +211,7 @@ public class SlowkoDAO {
         return (int) taskCount;
     }
 
-    public int getCountPozostaleDoNauki(int idZestawu){
+    public int getCountIleUmiesz(int idZestawu){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         long taskCount = DatabaseUtils.longForQuery(db, "SELECT COUNT (*) FROM SLOWKA WHERE id_zestawu=? AND czy_umie=1",
                 new String[] { String.valueOf(idZestawu) });

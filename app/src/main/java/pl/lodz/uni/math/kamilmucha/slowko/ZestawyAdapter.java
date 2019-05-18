@@ -155,7 +155,7 @@ class ZestawyAdapter extends RecyclerView.Adapter {
         Zestaw zestaw = zestawy.get(i);
         ((MyViewHolder) viewHolder).mNazwaZestawu.setText(zestaw.getNazwa());
         int count = slowkoDAO.getCount(zestaw.getId());
-        int countDoNauki = slowkoDAO.getCountPozostaleDoNauki(zestaw.getId());
+        int countDoNauki = slowkoDAO.getCountIleUmiesz(zestaw.getId());
 
         if (count != 0) {
             ((MyViewHolder) viewHolder).liczbaSlowek.setText(countDoNauki + "/" + count);

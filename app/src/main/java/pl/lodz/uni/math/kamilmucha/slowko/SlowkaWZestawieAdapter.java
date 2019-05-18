@@ -25,7 +25,7 @@ import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 public class SlowkaWZestawieAdapter extends RecyclerView.Adapter {
     private ArrayList<Slowko> slowka;
     private RecyclerView recyclerView;
-    private AppCompatActivity appCompatActivityt;
+    private AppCompatActivity appCompatActivity;
 
     private SlowkoDAO slowkoDAO;
 
@@ -45,7 +45,7 @@ public class SlowkaWZestawieAdapter extends RecyclerView.Adapter {
     public SlowkaWZestawieAdapter(ArrayList<Slowko> slowka, RecyclerView recyclerView, AppCompatActivity appCompatActivity) {
         this.slowka = slowka;
         this.recyclerView = recyclerView;
-        this.appCompatActivityt = appCompatActivity;
+        this.appCompatActivity = appCompatActivity;
     }
 
     @NonNull
@@ -104,7 +104,7 @@ public class SlowkaWZestawieAdapter extends RecyclerView.Adapter {
         Bundle args = new Bundle();
         args.putInt("id", slowko.get_id());
         edytujSlowkoDialog.setArguments(args);
-        edytujSlowkoDialog.show(appCompatActivityt.getSupportFragmentManager(), "edit_dialog");
+        edytujSlowkoDialog.show(appCompatActivity.getSupportFragmentManager(), "edit_dialog");
     }
 
     private void showDeleteDialog(final View v) {
@@ -131,6 +131,9 @@ public class SlowkaWZestawieAdapter extends RecyclerView.Adapter {
         ((MyViewHolder) viewHolder).textViewTlumaczenie.setText(slowko.getTlumaczenie());
         if (slowko.isCzyUmie()) {
             ((MyViewHolder) viewHolder).checkCzyUmie.setVisibility(View.VISIBLE);
+        }
+        else {
+            ((MyViewHolder) viewHolder).checkCzyUmie.setVisibility(View.INVISIBLE);
         }
     }
 

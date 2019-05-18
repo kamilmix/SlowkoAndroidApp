@@ -21,7 +21,9 @@ import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlowkoDialog.DodajDialogListener, EdytujSlowkoDialog.EdytujSlowkoListener {
     private SlowkoDAO slowkoDAO;
     private Button buttonDodaj;
+    private Button buttonNauka;
     private TextView przekazany;
+
 
     private ArrayList<Slowko> slowka;
 
@@ -35,6 +37,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
         setContentView(R.layout.activity_zestaw_slowek);
 
         buttonDodaj = findViewById(R.id.buttonOtworzDodaj);
+        buttonNauka = findViewById(R.id.buttonNaukaWZestawie);
         przekazany = findViewById(R.id.textViewPrzekazany);
 
         Intent intent = getIntent();
@@ -56,13 +59,21 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
         recyclerView.setAdapter(slowkaWZestawieAdapter);
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        refresh();
+
+    }
+
     protected void onClickButtonOtworzDialog(View view) {
         DodajSlowkoDialog dodajDialog = new DodajSlowkoDialog();
         dodajDialog.show(getSupportFragmentManager(), "dialog dodaj");
     }
 
     protected void onClickButtonResetujWszystkie(View view) {
-        slowkoDAO.updateResetujWszystkieCzyUmie();
+        slowkoDAO.updateResetujWszystkieCzyUmie(idZestawu);
+        refresh();
     }
 
     @Override
@@ -75,9 +86,20 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
     @Override
     public void przeslijEdytowaneSlowko(Slowko slowko) {
+       refresh();
+    }
+
+    public void onClickNaukaWZestawie(View view) {
+        Intent intent = new Intent(this, NaukaZestawuActivity.class);
+        intent.putExtra("idZestawu", idZestawu);
+        startActivity(intent);
+    }
+
+    private void refresh() {
         ArrayList<Slowko> slowkaNowe = new ArrayList<Slowko>();
         slowkaNowe = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas(idZestawu);
         Collections.copy(slowka, slowkaNowe);
         slowkaWZestawieAdapter.notifyDataSetChanged();
     }
+
 }

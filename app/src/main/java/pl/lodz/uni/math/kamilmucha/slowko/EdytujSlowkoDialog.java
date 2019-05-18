@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -51,6 +53,40 @@ public class EdytujSlowkoDialog extends AppCompatDialogFragment {
         editTextTlumaczenie.setText(slowko.getTlumaczenie());
         checkBoxCzyUmiesz.setChecked(slowko.isCzyUmie());
 
+        editTextTlumaczenie.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                okButtonEnabled(isTextInEditTexts());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editTextSlowko.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                okButtonEnabled(isTextInEditTexts());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         builder.setView(view)
                 .setTitle("Edytuj")
                 .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
@@ -81,6 +117,15 @@ public class EdytujSlowkoDialog extends AppCompatDialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "Zaimplement EdytujSlowkoListener");
         }
+    }
+
+    private boolean isTextInEditTexts() {
+        return !editTextSlowko.getText().toString().equals("") && !editTextTlumaczenie.getText().toString().equals("");
+    }
+
+    private void okButtonEnabled(boolean condition) {
+        AlertDialog dialog = (AlertDialog) getDialog();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(condition);
     }
 
     public interface EdytujSlowkoListener {

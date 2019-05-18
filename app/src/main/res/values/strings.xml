@@ -3,4 +3,5 @@
     <string name="nauka">Nauka</string>
     <string name="zestawy">Zestawy</string>
     <string name="pomoc">Pomoc</string>
+    <string name="title_activity_nauka_zestawu">NaukaZestawuActivity</string>
 </resources>
