@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.kamilmucha.slowko;
+package pl.lodz.uni.math.kamilmucha.slowko.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
+import pl.lodz.uni.math.kamilmucha.slowko.R;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 
 

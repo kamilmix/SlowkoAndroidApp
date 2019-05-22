@@ -12,10 +12,12 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
+import pl.lodz.uni.math.kamilmucha.slowko.adapters.ZestawyAdapter;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.ZestawDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
+import pl.lodz.uni.math.kamilmucha.slowko.dialogs.DodajZestawDialog;
 
 public class MojeZestawyActivity extends AppCompatActivity implements DodajZestawDialog.DodajZestawDialogListener {
     private static DatabaseHelper databaseHelper;

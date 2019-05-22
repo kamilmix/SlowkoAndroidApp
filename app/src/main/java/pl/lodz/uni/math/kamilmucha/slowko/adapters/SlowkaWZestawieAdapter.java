@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.kamilmucha.slowko;
+package pl.lodz.uni.math.kamilmucha.slowko.adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,10 +17,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.lodz.uni.math.kamilmucha.slowko.R;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
+import pl.lodz.uni.math.kamilmucha.slowko.dialogs.EdytujSlowkoDialog;
 
 public class SlowkaWZestawieAdapter extends RecyclerView.Adapter {
     private ArrayList<Slowko> slowka;

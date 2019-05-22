@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.kamilmucha.slowko;
+package pl.lodz.uni.math.kamilmucha.slowko.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import pl.lodz.uni.math.kamilmucha.slowko.R;
 
 
 public class DodajSlowkoDialog extends AppCompatDialogFragment {

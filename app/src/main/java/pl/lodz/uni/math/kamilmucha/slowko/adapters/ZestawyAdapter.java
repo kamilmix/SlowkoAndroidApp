@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.kamilmucha.slowko;
+package pl.lodz.uni.math.kamilmucha.slowko.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,13 +18,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.lodz.uni.math.kamilmucha.slowko.R;
+import pl.lodz.uni.math.kamilmucha.slowko.ZestawSlowekActivity;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.ZestawDAO;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 
-class ZestawyAdapter extends RecyclerView.Adapter {
+public class ZestawyAdapter extends RecyclerView.Adapter {
     public static final String EXTRA_MESSAGE = "pl.lodz.uni.math.kamilmucha.slowko.ZESTAW";
     private ArrayList<Zestaw> zestawy;
     private RecyclerView recyclerView;

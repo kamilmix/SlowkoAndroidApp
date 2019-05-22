@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
@@ -29,6 +30,8 @@ public class NaukaZestawuActivity extends AppCompatActivity {
     private TextView textViewWszystkich;
     private TextView textViewPozostalo;
 
+    private ImageView imageViewZaliczone;
+
     private EditText editTextWpisane;
 
     private SlowkoDAO slowkoDAO;
@@ -45,6 +48,7 @@ public class NaukaZestawuActivity extends AppCompatActivity {
         textViewPodpowiedz = findViewById(R.id.textViewPodpowiedz);
         textViewWszystkich = findViewById(R.id.textViewWszystkich);
         textViewPozostalo = findViewById(R.id.textViewPozostalo);
+        imageViewZaliczone = findViewById(R.id.imageViewZaliczone);
         editTextWpisane = findViewById(R.id.editTextWpisaneSlowko);
 
         Intent intent = getIntent();
@@ -55,17 +59,6 @@ public class NaukaZestawuActivity extends AppCompatActivity {
         slowkoDAO = new SlowkoDAO();
         refreshIle();
         getRandomSlowko();
-
-        if(pozostaloDoNauki>0) {
-
-        } else {
-            textViewSlowko.setText("Zaliczone!");
-            textViewSlowko.setBackgroundColor(Color.GREEN);
-            editTextWpisane.setVisibility(View.INVISIBLE);
-            buttonSprawdz.setVisibility(View.INVISIBLE);
-        }
-
-
 
         buttonSprawdz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +141,7 @@ public class NaukaZestawuActivity extends AppCompatActivity {
             textViewSlowko.setBackgroundColor(Color.GREEN);
             editTextWpisane.setVisibility(View.INVISIBLE);
             buttonSprawdz.setVisibility(View.INVISIBLE);
+            imageViewZaliczone.setVisibility(View.VISIBLE);
         }
     }
 }

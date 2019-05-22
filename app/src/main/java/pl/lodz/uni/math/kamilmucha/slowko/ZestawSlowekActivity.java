@@ -13,10 +13,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.lodz.uni.math.kamilmucha.slowko.adapters.SlowkaWZestawieAdapter;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.dialogs.DodajSlowkoDialog;
+import pl.lodz.uni.math.kamilmucha.slowko.dialogs.EdytujSlowkoDialog;
 
 public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlowkoDialog.DodajDialogListener, EdytujSlowkoDialog.EdytujSlowkoListener {
     private SlowkoDAO slowkoDAO;

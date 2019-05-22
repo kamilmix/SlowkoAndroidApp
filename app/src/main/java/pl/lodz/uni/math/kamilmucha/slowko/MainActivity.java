@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickNauka(View v) {
-        Intent intent = new Intent(this, NaukaActivity.class);
+        Intent intent = new Intent(this, WyborZestawuDoNaukiActivity.class);
         startActivity(intent);
 
     }
@@ -29,4 +29,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PomocActivity.class);
         startActivity(intent);
     }
+
+
 }
