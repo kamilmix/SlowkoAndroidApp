@@ -39,14 +39,33 @@ public class ZestawDAO {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    public List getAllZestaws() {
+    public ArrayList getAllZestaws() {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.query("ZESTAWY",
                 new String[]{"_id", "nazwa"},
                 null, null, null, null, null
         );
 
-        List results = new ArrayList<>();
+        ArrayList<Zestaw> results = new ArrayList<>();
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                results.add(mapCursorToZestaw(cursor));
+            }
+        }
+        DatabaseManager.getInstance().closeDatabase();
+        return results;
+
+    }
+
+    public ArrayList getAllZestawsDoNauki() {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db
+                .rawQuery("SELECT id_zestawu AS _id, nazwa FROM SLOWKA " +
+                        "INNER JOIN ZESTAWY ON ZESTAWY._id = SLOWKA.id_zestawu " +
+                        "WHERE czy_umie = 0 GROUP BY id_zestawu", null);
+
+        ArrayList<Zestaw> results = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -62,7 +81,6 @@ public class ZestawDAO {
         int idColumnId = cursor.getColumnIndex("_id");
         int nazwaColumnId = cursor.getColumnIndex("nazwa");
 
-        Zestaw zestaw = new Zestaw(cursor.getInt(idColumnId), cursor.getString(nazwaColumnId));
-        return zestaw;
+        return new Zestaw(cursor.getInt(idColumnId), cursor.getString(nazwaColumnId));
     }
 }

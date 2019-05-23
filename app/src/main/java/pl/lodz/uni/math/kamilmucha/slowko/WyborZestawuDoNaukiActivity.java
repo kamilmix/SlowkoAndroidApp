@@ -26,7 +26,7 @@ public class WyborZestawuDoNaukiActivity extends AppCompatActivity {
         DatabaseManager.initializeInstance(databaseHelper);
 
         ZestawDAO zestawDAO = new ZestawDAO();
-        zestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestaws();
+        zestawy = (ArrayList<Zestaw>) zestawDAO.getAllZestawsDoNauki();
 
         RecyclerView recyclerView = findViewById(R.id.RecyclerViewWybierzZestawDoNauki);
         recyclerView.setHasFixedSize(true);

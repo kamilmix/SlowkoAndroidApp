@@ -68,14 +68,14 @@ public class SlowkoDAO {
     }
 
 
-    public List getAllSlowkas() {
+    public ArrayList getAllSlowkas() {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor cursor = db.query(Slowka.TABLE_NAME,
                 new String[]{"_id", "slowko", "tlumaczenie", "czy_umie"},
                 null, null, null, null, null
         );
 
-        List results = new ArrayList<>();
+        ArrayList<Slowko> results = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -93,7 +93,7 @@ public class SlowkoDAO {
                 "id_zestawu=" + idZestawu, null, null, null, null
         );
 
-        List results = new ArrayList<>();
+        ArrayList<Slowko> results = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -109,7 +109,7 @@ public class SlowkoDAO {
         Cursor cursor = db
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0", null);
 
-        List results = new ArrayList<Slowko>();
+        ArrayList<Slowko> results = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -120,7 +120,7 @@ public class SlowkoDAO {
         int index = randomGenerator.nextInt(results.size());
 
         Slowko slowko;
-        slowko = (Slowko) results.get(index);
+        slowko = results.get(index);
         return slowko;
     }
 
@@ -129,7 +129,7 @@ public class SlowkoDAO {
         Cursor cursor = db
                 .rawQuery("SELECT * FROM " + Slowka.TABLE_NAME + " where czy_umie=0  AND id_zestawu=" + idZestawu, null);
 
-        List results = new ArrayList<Slowko>();
+        ArrayList<Slowko> results = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -140,7 +140,7 @@ public class SlowkoDAO {
         int index = randomGenerator.nextInt(results.size());
 
         Slowko slowko;
-        slowko = (Slowko) results.get(index);
+        slowko = results.get(index);
         return slowko;
     }
 
