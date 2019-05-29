@@ -24,6 +24,7 @@ public class NaukaZestawuActivity extends AppCompatActivity {
     private Button buttonSprawdz;
     private Button buttonUmiem;
     private Button buttonNieUmiem;
+    private Button buttonPowrot;
 
     private TextView textViewSlowko;
     private TextView textViewPodpowiedz;
@@ -44,6 +45,7 @@ public class NaukaZestawuActivity extends AppCompatActivity {
         buttonSprawdz = findViewById(R.id.buttonSprawdzWNauce);
         buttonUmiem = findViewById(R.id.buttonUmiem);
         buttonNieUmiem = findViewById(R.id.buttonNieUmiem);
+        buttonPowrot = findViewById(R.id.buttonPowrot);
         textViewSlowko = findViewById(R.id.textViewSlowkoDoNauki);
         textViewPodpowiedz = findViewById(R.id.textViewPodpowiedz);
         textViewWszystkich = findViewById(R.id.textViewWszystkich);
@@ -78,6 +80,13 @@ public class NaukaZestawuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buttonUmiemClicked();
+            }
+        });
+
+        buttonPowrot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -142,6 +151,7 @@ public class NaukaZestawuActivity extends AppCompatActivity {
             editTextWpisane.setVisibility(View.INVISIBLE);
             buttonSprawdz.setVisibility(View.INVISIBLE);
             imageViewZaliczone.setVisibility(View.VISIBLE);
+            buttonPowrot.setVisibility(View.VISIBLE);
         }
     }
 }

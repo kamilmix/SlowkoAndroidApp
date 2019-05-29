@@ -187,6 +187,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_check_24dp" />
+
+            <Button
+                android:id="@+id/buttonPowrot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Powrót"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/buttonSprawdzWNauce"
+                app:layout_constraintStart_toStartOf="@+id/buttonSprawdzWNauce"
+                app:layout_constraintTop_toTopOf="@+id/buttonSprawdzWNauce" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

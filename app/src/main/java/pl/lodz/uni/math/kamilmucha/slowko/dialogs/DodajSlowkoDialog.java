@@ -26,7 +26,7 @@ public class DodajSlowkoDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_dodaj_slowko, null);
 
         editTextSlowko = view.findViewById(R.id.dialogEditTextSlowko);

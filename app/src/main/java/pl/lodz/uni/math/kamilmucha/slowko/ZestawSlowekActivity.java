@@ -54,6 +54,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
         przekazany.setText(nazwaZestawu);
 
+
         RecyclerView recyclerView = findViewById(R.id.RecyclerViewSlowkaWZestawie);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,12 +70,12 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
     }
 
-    protected void onClickButtonOtworzDialog(View view) {
+    public void onClickButtonOtworzDialog(View view) {
         DodajSlowkoDialog dodajDialog = new DodajSlowkoDialog();
-        dodajDialog.show(getSupportFragmentManager(), "dialog dodaj");
+        dodajDialog.show(getSupportFragmentManager(), "dialog dodaj slowko");
     }
 
-    protected void onClickButtonResetujWszystkie(View view) {
+    public void onClickButtonResetujWszystkie(View view) {
         slowkoDAO.updateResetujWszystkieCzyUmie(idZestawu);
         refresh();
     }
