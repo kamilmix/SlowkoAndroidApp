@@ -1,5 +1,6 @@
 package pl.lodz.uni.math.kamilmucha.slowko;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -84,5 +85,10 @@ public class MojeZestawyActivity extends AppCompatActivity implements DodajZesta
         zestaw.setNazwa(nazwa);
         zestawDAO.insertZestaw(zestaw);
         updateZestawy();
+    }
+
+    public void onClickPobierzZestaw(View view) {
+        Intent intent = new Intent(this, PobierzZestawyActivity.class);
+        startActivity(intent);
     }
 }

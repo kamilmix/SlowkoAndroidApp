@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="24dp"
                     android:padding="8dp"
-                    android:text="W celu usunięcia zestawu przejdź do zakładki Zestawy, następnie przytrzymaj dłużej palcem na wybranym zestawie i wybier opcję usuń z menu." />
+                    android:text="W celu usunięcia zestawu przejdź do zakładki Zestawy, następnie przytrzymaj dłużej palcem na wybranym zestawie i wybierz opcję usuń z menu." />
             </android.support.v7.widget.CardView>
 
             <TextView
