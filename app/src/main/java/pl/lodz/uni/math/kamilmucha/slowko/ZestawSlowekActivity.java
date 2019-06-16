@@ -1,15 +1,25 @@
 package pl.lodz.uni.math.kamilmucha.slowko;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,6 +28,7 @@ import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseHelper;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DatabaseManager;
 import pl.lodz.uni.math.kamilmucha.slowko.database.model.Slowko;
 import pl.lodz.uni.math.kamilmucha.slowko.database.DAO.SlowkoDAO;
+import pl.lodz.uni.math.kamilmucha.slowko.database.model.Zestaw;
 import pl.lodz.uni.math.kamilmucha.slowko.dialogs.DodajSlowkoDialog;
 import pl.lodz.uni.math.kamilmucha.slowko.dialogs.EdytujSlowkoDialog;
 
@@ -33,6 +44,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
     private SlowkaWZestawieAdapter slowkaWZestawieAdapter;
 
     private int idZestawu;
+    private String nazwaZestawu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +57,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
         Intent intent = getIntent();
         idZestawu = intent.getIntExtra("idZestawu", 1);
-        String nazwaZestawu = intent.getStringExtra("nazwaZestawu");
+        nazwaZestawu = intent.getStringExtra("nazwaZestawu");
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         DatabaseManager.initializeInstance(databaseHelper);
@@ -53,8 +65,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
         slowka = (ArrayList<Slowko>) slowkoDAO.getAllSlowkas(idZestawu);
 
         przekazany.setText(nazwaZestawu);
-
-
+        
         RecyclerView recyclerView = findViewById(R.id.RecyclerViewSlowkaWZestawie);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +78,6 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
     protected void onPostResume() {
         super.onPostResume();
         refresh();
-
     }
 
     public void onClickButtonOtworzDialog(View view) {
@@ -90,7 +100,7 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
 
     @Override
     public void przeslijEdytowaneSlowko(Slowko slowko) {
-       refresh();
+        refresh();
     }
 
     public void onClickNaukaWZestawie(View view) {
@@ -105,5 +115,72 @@ public class ZestawSlowekActivity extends AppCompatActivity implements DodajSlow
         Collections.copy(slowka, slowkaNowe);
         slowkaWZestawieAdapter.notifyDataSetChanged();
     }
+
+    private void showShortToast(String text) {
+        Toast.makeText(ZestawSlowekActivity.this, text, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void onClickButtonUpload(View view) {
+        new UploadTask().execute();
+    }
+
+    private class UploadTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            HttpURLConnection httpURLConnection = null;
+
+            try {
+                URL restApiEndpoint = new URL(MainActivity.API_URL);
+                httpURLConnection = (HttpURLConnection) restApiEndpoint.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+
+                JSONObject zestawJSON = new JSONObject();
+                zestawJSON.put("name", nazwaZestawu);
+
+                JSONArray slowkaJSON = new JSONArray();
+
+                for (Slowko slowko : slowka) {
+                    JSONObject slowkoJSON = new JSONObject();
+                    slowkoJSON.put("slowko", slowko.getSlowko());
+                    slowkoJSON.put("tlumaczenie", slowko.getTlumaczenie());
+                    slowkaJSON.put(slowkoJSON);
+                }
+
+                JSONObject allValuesJSON = new JSONObject();
+                allValuesJSON.put("zestaw", zestawJSON);
+                allValuesJSON.put("slowka", slowkaJSON);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.getOutputStream().write(allValuesJSON.toString().getBytes());
+
+                return httpURLConnection.getResponseCode();
+            } catch (Exception e) {
+                e.printStackTrace();
+                showShortToast("ERROR");
+            } finally {
+                if (httpURLConnection != null) {
+                    httpURLConnection.disconnect();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            if (responseCode == 200) {
+                showShortToast("Wysłano zestaw poprawnie!");
+            } else {
+                showShortToast("Coś poszło nie tak!");
+            }
+        }
+    }
+
 
 }
